@@ -72,6 +72,7 @@
     "clean": "babel-node tools/run clean",
     "copy": "babel-node tools/run copy",
     "bundle": "babel-node tools/run bundle",
+    "build": "babel-node tools/run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
