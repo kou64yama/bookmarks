@@ -11,12 +11,12 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FastClick from 'fastclick';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import UniversalRouter from 'universal-router';
 import queryString from 'query-string';
 import { createPath } from 'history/PathUtils';
 import history from './core/history';
 import App from './components/App';
+import configureStore from './store/configureStore';
 import configureMuiTheme from './styles/configureMuiTheme';
 import { ErrorReporter, deepForceUpdate } from './core/devUtils';
 
@@ -30,7 +30,9 @@ const context = {
     const removeCss = styles.map(x => x._insertCss());
     return () => { removeCss.forEach(f => f()); };
   },
-
+  // Initialize a new Redux store
+  // http://redux.js.org/docs/basics/UsageWithReact.html
+  store: configureStore(window.APP_STATE),
   // Configure Material-UI Theme
   // http://www.material-ui.com
   muiTheme: configureMuiTheme(),
@@ -113,10 +115,6 @@ let onRenderComplete = function initialRenderComplete() {
 
 // Make taps on links and buttons work fast on mobiles
 FastClick.attach(document.body);
-
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
 
 const container = document.getElementById('app');
 let appInstance;

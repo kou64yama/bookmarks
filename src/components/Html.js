@@ -10,9 +10,10 @@
  /* eslint-disable react/no-danger */
 
 import React, { PropTypes } from 'react';
+import serialize from 'serialize-javascript';
 import { analytics } from '../config';
 
-const Html = ({ title, description, style, scripts, children }) => (
+const Html = ({ title, description, style, scripts, state, children }) => (
   <html className="no-js" lang="en">
     <head>
       <meta charSet="utf-8" />
@@ -25,6 +26,12 @@ const Html = ({ title, description, style, scripts, children }) => (
     </head>
     <body>
       <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
+      {state && (
+        <script
+          dangerouslySetInnerHTML={{ __html:
+          `window.APP_STATE=${serialize(state, { isJSON: true })}` }}
+        />
+      )}
       {scripts && scripts.map(script => <script key={script} src={script} />)}
       {analytics.google.trackingId &&
         <script
@@ -45,6 +52,7 @@ Html.propTypes = {
   description: PropTypes.string.isRequired,
   style: PropTypes.string,
   scripts: PropTypes.arrayOf(PropTypes.string.isRequired),
+  state: PropTypes.shape({}),
   children: PropTypes.string,
 };
 

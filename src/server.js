@@ -26,6 +26,7 @@ import passport from './core/passport';
 import models from './data/models';
 import routes from './routes';
 import assets from './assets'; // eslint-disable-line import/no-unresolved
+import configureStore from './store/configureStore';
 import configureMuiTheme from './styles/configureMuiTheme';
 import { port, auth } from './config';
 
@@ -82,6 +83,12 @@ app.get('/login/facebook/return',
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
   try {
+    const store = configureStore({
+      user: req.user || null,
+    }, {
+      cookie: req.headers.cookie,
+    });
+
     const css = new Set();
 
     // Global (context) variables that can be easily accessed from any React component
@@ -93,13 +100,16 @@ app.get('*', async (req, res, next) => {
         // eslint-disable-next-line no-underscore-dangle
         styles.forEach(style => css.add(style._getCss()));
       },
-
+      // Initialize a new Redux store
+      // http://redux.js.org/docs/basics/UsageWithReact.html
+      store,
       // Configure Material-UI Theme
       // http://www.material-ui.com
       muiTheme: configureMuiTheme(),
     };
 
     const route = await UniversalRouter.resolve(routes, {
+      ...context,
       path: req.path,
       query: req.query,
     });
@@ -116,6 +126,7 @@ app.get('*', async (req, res, next) => {
       assets.vendor.js,
       assets.client.js,
     ];
+    data.state = store.getState();
     if (assets[route.chunk]) {
       data.scripts.push(assets[route.chunk].js);
     }
