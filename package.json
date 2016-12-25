@@ -24,11 +24,13 @@
     "eslint-plugin-css-modules": "^2.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.8.0"
+    "eslint-plugin-react": "^6.8.0",
+    "rimraf": "^2.5.4"
   },
   "scripts": {
     "lint:js": "eslint src tools",
     "lint": "npm run lint:js",
+    "clean": "babel-node tools/run clean",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
