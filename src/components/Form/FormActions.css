@@ -1,0 +1,8 @@
+.root {
+  text-align: right;
+  padding: 0.5em;
+}
+
+.action:not(:last-child) {
+  margin-right: 0.5em;
+}

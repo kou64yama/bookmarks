@@ -1,1 +1,3 @@
 export const CHANGE_AUTH_STATUS = 'CHANGE_AUTH_STATUS';
+export const OPEN_ALERT = 'OPEN_ALERT';
+export const CLOSE_ALERT = 'CLOSE_ALERT';
