@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=6.5",
+    "npm": ">=3.10"
+  },
   "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -25,12 +29,15 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
+    "glob": "^7.1.1",
+    "mkdirp": "^0.5.1",
     "rimraf": "^2.5.4"
   },
   "scripts": {
     "lint:js": "eslint src tools",
     "lint": "npm run lint:js",
     "clean": "babel-node tools/run clean",
+    "copy": "babel-node tools/run copy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
