@@ -16,7 +16,7 @@ export default {
 
   // Keep in mind, routes are evaluated in order
   children: [
-    // require('./home').default,
+    require('./home').default,
     // require('./login').default,
     // require('./admin').default,
 
@@ -29,7 +29,7 @@ export default {
     const route = await next();
 
     // Provide default values for title, description etc.
-    route.title = `${route.title || 'Untitled Page'} - Bookmarks`;
+    route.title = route.title === 'Bookmarks' ? 'Bookmarks' : `${route.title} - Bookmarks`;
     route.description = route.description || '';
 
     return route;
