@@ -7,7 +7,11 @@
     "node": ">=6.9",
     "npm": ">=3.10"
   },
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.14.0",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1"
+  },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.0",
     "autoprefixer": "^6.6.0",
@@ -32,6 +36,7 @@
     "babel-preset-stage-0": "^6.16.0",
     "babel-template": "^6.16.0",
     "babel-types": "^6.21.0",
+    "browser-sync": "^2.18.5",
     "css-loader": "^0.26.1",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
@@ -62,9 +67,12 @@
     "postcss-selector-not": "^2.0.0",
     "postcss-url": "^5.1.2",
     "raw-loader": "^0.5.1",
+    "react-hot-loader": "^3.0.0-beta.6",
     "rimraf": "^2.5.4",
     "url-loader": "^0.5.7",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.0",
+    "webpack-hot-middleware": "^2.14.0",
+    "webpack-middleware": "^1.5.1"
   },
   "scripts": {
     "lint:js": "eslint src tools",
@@ -73,6 +81,7 @@
     "copy": "babel-node tools/run copy",
     "bundle": "babel-node tools/run bundle",
     "build": "babel-node tools/run build",
+    "start": "babel-node tools/run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -127,7 +136,7 @@
     "rules": {
       "import/extensions": "off",
       "import/no-extraneous-dependencies": [
-        "off",
+        "error",
         {
           "devDependencies": [
             "**/*.test.js"
