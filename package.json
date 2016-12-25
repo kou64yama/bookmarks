@@ -6,7 +6,19 @@
   "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
+    "babel-plugin-rewire": "^1.0.0",
+    "babel-plugin-syntax-trailing-function-commas": "^6.20.0",
+    "babel-plugin-transform-async-to-generator": "^6.16.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.19.0",
+    "babel-plugin-transform-es2015-duplicate-keys": "^6.8.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-plugin-transform-es2015-parameters": "^6.21.0",
+    "babel-plugin-transform-exponentiation-operator": "^6.8.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-css-modules": "^2.0.0",
@@ -30,6 +42,29 @@
     "url": "https://github.com/kou64yama/bookmarks/issues"
   },
   "homepage": "https://github.com/kou64yama/bookmarks#readme",
+  "babel": {
+    "presets": [
+      "react",
+      "stage-0"
+    ],
+    "plugins": [
+      "syntax-trailing-function-commas",
+      "transform-async-to-generator",
+      "transform-es2015-destructuring",
+      "transform-es2015-parameters",
+      "transform-es2015-duplicate-keys",
+      "transform-es2015-modules-commonjs",
+      "transform-exponentiation-operator",
+      "transform-runtime"
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "rewire"
+        ]
+      }
+    }
+  },
   "eslintConfig": {
     "parser": "babel-eslint",
     "extends": [
