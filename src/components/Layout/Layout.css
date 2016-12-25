@@ -25,6 +25,12 @@ html {
   line-height: 1.375; /* ~22px */
 }
 
+input,
+textarea,
+button {
+  font-family: var(--font-family-base);
+}
+
 a {
   color: #0074c2;
 }
