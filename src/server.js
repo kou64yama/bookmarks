@@ -26,6 +26,7 @@ import passport from './core/passport';
 import models from './data/models';
 import routes from './routes';
 import assets from './assets'; // eslint-disable-line import/no-unresolved
+import configureMuiTheme from './styles/configureMuiTheme';
 import { port, auth } from './config';
 
 const app = express();
@@ -92,6 +93,10 @@ app.get('*', async (req, res, next) => {
         // eslint-disable-next-line no-underscore-dangle
         styles.forEach(style => css.add(style._getCss()));
       },
+
+      // Configure Material-UI Theme
+      // http://www.material-ui.com
+      muiTheme: configureMuiTheme(),
     };
 
     const route = await UniversalRouter.resolve(routes, {

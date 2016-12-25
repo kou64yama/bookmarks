@@ -13,6 +13,9 @@ const ContextType = {
   // Enables critical path CSS rendering
   // https://github.com/kriasoft/isomorphic-style-loader
   insertCss: PropTypes.func.isRequired,
+  // Configure Material-UI Theme
+  // http://www.material-ui.com/#/
+  muiTheme: PropTypes.object.isRequired,
 };
 
 /**

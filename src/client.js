@@ -11,11 +11,13 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FastClick from 'fastclick';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import UniversalRouter from 'universal-router';
 import queryString from 'query-string';
 import { createPath } from 'history/PathUtils';
 import history from './core/history';
 import App from './components/App';
+import configureMuiTheme from './styles/configureMuiTheme';
 import { ErrorReporter, deepForceUpdate } from './core/devUtils';
 
 // Global (context) variables that can be easily accessed from any React component
@@ -28,6 +30,10 @@ const context = {
     const removeCss = styles.map(x => x._insertCss());
     return () => { removeCss.forEach(f => f()); };
   },
+
+  // Configure Material-UI Theme
+  // http://www.material-ui.com
+  muiTheme: configureMuiTheme(),
 };
 
 function updateTag(tagName, keyName, keyValue, attrName, attrValue) {
@@ -107,6 +113,10 @@ let onRenderComplete = function initialRenderComplete() {
 
 // Make taps on links and buttons work fast on mobiles
 FastClick.attach(document.body);
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 
 const container = document.getElementById('app');
 let appInstance;
