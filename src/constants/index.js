@@ -1,0 +1,5 @@
+export const CHANGE_AUTH_STATUS = 'CHANGE_AUTH_STATUS';
+export const OPEN_MODAL = 'OPEN_MODAL';
+export const CLOSE_MODAL = 'CLOSE_MODAL';
+
+export const RECEIVE_BOOKMAKRS = 'RECEIVE_BOOKMAKRS';
