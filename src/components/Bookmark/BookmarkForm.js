@@ -1,57 +1,93 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Form, FormText, FormActions } from '../Form';
 import Link from '../Link';
+import history from '../../core/history';
 
-const BookmarkForm = ({ onRequestSubmit }) => {
-  let name;
-  let url;
-  let description;
+class BookmarkForm extends Component {
+  static propTypes = {
+    onRequestSubmit: PropTypes.func,
+  }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (onRequestSubmit) {
-      onRequestSubmit({
-        name: name.getValue(),
-        url: url.getValue(),
-        description: description.getValue(),
-      });
+  state = {
+    disabled: false,
+    error: undefined,
+  }
+
+  async handleSubmit(event) {
+    try {
+      event.preventDefault();
+      this.setState({ disabled: true, error: undefined });
+
+      const { onRequestSubmit } = this.props;
+      if (onRequestSubmit) {
+        const payload = {
+          name: this.name.getValue(),
+          url: this.url.getValue(),
+          description: this.description.getValue(),
+        };
+        await onRequestSubmit(payload);
+        history.push('/');
+      }
+    } catch (error) {
+      this.setState({ error });
+    } finally {
+      this.setState({ disabled: false });
     }
-  };
+  }
 
-  return (
-    <Form onSubmit={handleSubmit}>
-      <FormText>
-        <TextField
-          floatingLabelText="Name"
-          fullWidth
-          ref={node => (name = node)}
-        />
-        <TextField
-          floatingLabelText="URL"
-          fullWidth
-          ref={node => (url = node)}
-        />
-        <TextField
-          floatingLabelText="Description"
-          rows={4}
-          rowsMax={4}
-          multiLine
-          fullWidth
-          ref={node => (description = node)}
-        />
-      </FormText>
-      <FormActions>
-        <RaisedButton label="Cancel" containerElement={<Link to="/" />} />
-        <RaisedButton label="OK" type="submit" primary />
-      </FormActions>
-    </Form>
-  );
-};
+  createErrorMap() {
+    const map = {};
+    if (!this.state.error || !this.state.error.errors) {
+      return map;
+    }
 
-BookmarkForm.propTypes = {
-  onRequestSubmit: PropTypes.func,
-};
+    this.state.error.errors.forEach(({ path, message }) => {
+      map[path] = message;
+    });
+    return map;
+  }
+
+  render() {
+    const errorMap = this.createErrorMap();
+    const { disabled } = this.state;
+
+    return (
+      <Form onSubmit={event => this.handleSubmit(event)}>
+        <FormText>
+          <TextField
+            floatingLabelText="Name"
+            errorText={errorMap.name}
+            disabled={disabled}
+            fullWidth
+            ref={node => (this.name = node)}
+          />
+          <TextField
+            floatingLabelText="URL"
+            errorText={errorMap.url}
+            disabled={disabled}
+            fullWidth
+            ref={node => (this.url = node)}
+          />
+          <TextField
+            floatingLabelText="Description"
+            errorText={errorMap.description}
+            rows={4}
+            rowsMax={4}
+            disabled={disabled}
+            multiLine
+            fullWidth
+            ref={node => (this.description = node)}
+          />
+        </FormText>
+        <FormActions>
+          <RaisedButton label="Cancel" containerElement={<Link to="/" />} />
+          <RaisedButton label="OK" type="submit" disabled={this.state.disabled} primary />
+        </FormActions>
+      </Form>
+    );
+  }
+}
 
 export default BookmarkForm;

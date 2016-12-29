@@ -18,6 +18,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 import UniversalRouter from 'universal-router';
 import PrettyError from 'pretty-error';
+import rest from './rest';
 import App from './components/App';
 import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
@@ -76,7 +77,7 @@ app.get('/login/facebook/return',
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
-
+app.use('/rest', rest());
 
 //
 // Register server-side rendering middleware

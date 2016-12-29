@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import queryString from 'query-string';
+import createError from 'http-errors';
 
 class RequestBuilder {
   constructor({ responseHandlers = [] } = {}) {
@@ -41,16 +42,15 @@ class RequestBuilder {
     const contentType = response.headers.get('Content-Type');
     const handler = this.responseHandlers
       .find(({ acceptable }) => acceptable.test(contentType));
-    const body = handler ? await handler.handle(response) : response.body;
+    const body = handler ? await handler.handle(response) : undefined;
 
     if (!response.ok) {
-      const error = new Error(response.statusText);
-      error.response = response;
-      error.body = body;
-      throw error;
+      throw createError(response.status, body.message || response.statusText, {
+        ...body || {},
+      });
     }
 
-    return body;
+    return body || response.body;
   }
 }
 
