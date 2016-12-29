@@ -1,22 +1,21 @@
 import {
-  OPEN_ALERT,
-  CLOSE_ALERT,
+  OPEN_MODAL,
+  CLOSE_MODAL,
 } from '../constants';
 
 const initialState = {
-  open: false,
+  open: undefined,
   message: undefined,
   resolve: undefined,
 };
 
 export default function modal(state = initialState, { type, payload }) {
   switch (type) {
-    case OPEN_ALERT:
+    case OPEN_MODAL:
       return {
         ...payload,
-        open: true,
       };
-    case CLOSE_ALERT:
+    case CLOSE_MODAL:
       return initialState;
     default:
       return state;

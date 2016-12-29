@@ -4,24 +4,27 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import s from './Modal.css';
 
-const Alert = ({ message, resolve, onRequestClose, ...others }) => {
-  const handleClose = () => {
+const Confirm = ({ message, resolve, onRequestClose, ...others }) => {
+  const createHandler = result => () => {
     if (onRequestClose) {
       onRequestClose();
     }
     if (resolve) {
-      resolve();
+      resolve(result);
     }
   };
+  const handleOk = createHandler(true);
+  const handleCancel = createHandler(false);
 
   const actions = [
-    <RaisedButton label="OK" onTouchTap={handleClose} primary />,
+    <RaisedButton label="Cancel" onTouchTap={handleCancel} />,
+    <RaisedButton label="OK" onTouchTap={handleOk} primary />,
   ];
 
   return (
     <Dialog
       {...others}
-      onRequestClose={handleClose}
+      onRequestClose={handleCancel}
       actions={actions}
       modal
     >
@@ -30,10 +33,10 @@ const Alert = ({ message, resolve, onRequestClose, ...others }) => {
   );
 };
 
-Alert.propTypes = {
+Confirm.propTypes = {
   ...Dialog.propTypes,
   message: PropTypes.string,
   resolve: PropTypes.func,
 };
 
-export default withStyles(s)(Alert);
+export default withStyles(s)(Confirm);

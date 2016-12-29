@@ -1,16 +1,31 @@
-import { openAlert } from '../actions/modal';
+import { openAlert, openConfirm, openPrompt } from '../actions/modal';
+
+function ensureOptions(options = {}) {
+  return typeof options === 'object' ? options : { message: String(options) };
+}
 
 function alert(dispatch) {
   return (options = {}) => new Promise((resolve) => {
-    if (typeof options !== 'object') {
-        // eslint-disable-next-line no-param-reassign
-      options = { message: String(options) };
-    }
+    dispatch(openAlert({ ...ensureOptions(options), resolve }));
+  });
+}
 
-    dispatch(openAlert({ ...options, resolve }));
+function confirm(dispatch) {
+  return (options = {}) => new Promise((resolve) => {
+    dispatch(openConfirm({ ...ensureOptions(options), resolve }));
+  });
+}
+
+function prompt(dispatch) {
+  return (options = {}) => new Promise((resolve) => {
+    dispatch(openPrompt({ ...ensureOptions(options), resolve }));
   });
 }
 
 export default function modal(dispatch) {
-  return { alert: alert(dispatch) };
+  return {
+    alert: alert(dispatch),
+    confirm: confirm(dispatch),
+    prompt: prompt(dispatch),
+  };
 }
