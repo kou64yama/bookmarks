@@ -1,6 +1,13 @@
 import { openAlert, openConfirm, openPrompt } from '../actions/modal';
 
 function ensureOptions(options = {}) {
+  if (options instanceof Error) {
+    return {
+      message: process.env.NODE_ENV !== 'production' ? options.stack : options.message,
+      title: options.name,
+    };
+  }
+
   return typeof options === 'object' ? options : { message: String(options) };
 }
 
