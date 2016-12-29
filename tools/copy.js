@@ -29,6 +29,8 @@ async function copy() {
       },
     }, null, 2)),
     copyFile('LICENSE.md', 'build/LICENSE.md'),
+    copyFile('.env', 'build/.env'),
+    copyFile('Procfile', 'build/Procfile'),
     copyDir('src/content', 'build/content'),
     copyDir('public', 'build/public'),
   ]);
