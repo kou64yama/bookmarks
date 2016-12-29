@@ -35,6 +35,10 @@ const Bookmark = Model.define('Bookmark', {
     },
   },
 
+  lastAccessAt: {
+    type: DataType.DATE,
+  },
+
 });
 
 export default Bookmark;

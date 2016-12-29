@@ -33,7 +33,7 @@ function restify(Model) {
 
   router.get('/:id', async (req, res, next) => {
     try {
-      const result = await Model.findOne(req.params.id);
+      const result = await Model.findById(req.params.id);
       res.status(200);
       res.jsonp(result);
     } catch (err) {

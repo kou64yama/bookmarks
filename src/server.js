@@ -24,7 +24,7 @@ import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
 import passport from './core/passport';
-import models from './data/models';
+import models, { Bookmark } from './data/models';
 import routes from './routes';
 import assets from './assets'; // eslint-disable-line import/no-unresolved
 import configureStore from './store/configureStore';
@@ -78,6 +78,22 @@ app.get('/login/facebook/return',
 // Register API middleware
 // -----------------------------------------------------------------------------
 app.use('/rest', rest());
+
+//
+// Register bookmark redirect
+// -----------------------------------------------------------------------------
+app.get('/redirect/:id', async (req, res, next) => {
+  try {
+    const bookmark = await Bookmark.findById(req.params.id);
+    res.status(302);
+    res.redirect(bookmark.url);
+
+    bookmark.accessAt = new Date();
+    bookmark.save();
+  } catch (err) {
+    next(err);
+  }
+});
 
 //
 // Register server-side rendering middleware

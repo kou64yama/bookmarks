@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import queryString from 'query-string';
 import createError from 'http-errors';
+import { host } from '../config';
 
 class RequestBuilder {
   constructor({ responseHandlers = [] } = {}) {
@@ -20,9 +21,24 @@ class RequestBuilder {
     return this;
   }
 
+  localUrl() {
+    if (process.env.BROWSER) {
+      return this.url;
+    }
+
+    if (this.url.startsWith('//')) {
+      return `https:${this.url}`;
+    }
+    if (this.url.startsWith('/')) {
+      return `http://${host}${this.url}`;
+    }
+
+    return this.url;
+  }
+
   async send(body) {
     const url = this.params ?
-      `${this.url}?${queryString.stringify(this.params)}` : this.url;
+      `${this.localUrl()}?${queryString.stringify(this.params)}` : this.localUrl();
     const headers = {
       ...this.headers,
       Accept: 'application/json',
