@@ -7,6 +7,7 @@ import Edit from 'material-ui/svg-icons/image/edit';
 import Delete from 'material-ui/svg-icons/action/delete';
 import moment from 'moment';
 import s from './BookmarkListItem.css';
+import Link from '../Link';
 
 class BookmarkListItem extends Component {
   static propTypes = {
@@ -40,7 +41,7 @@ class BookmarkListItem extends Component {
       return undefined;
     }
 
-    const { description, lastAccessAt } = this.props;
+    const { id, description, lastAccessAt } = this.props;
     return (
       <div className={s.expanded}>
         <div className={s.lastAccessAt}>
@@ -48,7 +49,9 @@ class BookmarkListItem extends Component {
         </div>
         <div className={s.description}>{description}</div>
         <div className={s.actions}>
-          <IconButton><Edit color="#666" /></IconButton>
+          <IconButton containerElement={<Link to={`/edit/${id}`} />}>
+            <Edit color="#666" />
+          </IconButton>
           <IconButton><Delete color="#666" /></IconButton>
         </div>
       </div>
