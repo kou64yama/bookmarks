@@ -60,6 +60,16 @@ function restify(Model) {
     }
   });
 
+  router.delete('/:id', async (req, res, next) => {
+    try {
+      await Model.destroy({ where: req.params });
+      res.status(200);
+      res.end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // eslint-disable-next-line no-unused-vars
   router.use((err, req, res, next) => {
     // eslint-disable-next-line no-console

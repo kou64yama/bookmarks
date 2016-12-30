@@ -8,6 +8,7 @@ import Delete from 'material-ui/svg-icons/action/delete';
 import moment from 'moment';
 import s from './BookmarkListItem.css';
 import Link from '../Link';
+import DeleteBookmark from '../../containers/DeleteBookmark';
 
 class BookmarkListItem extends Component {
   static propTypes = {
@@ -52,7 +53,9 @@ class BookmarkListItem extends Component {
           <IconButton containerElement={<Link to={`/edit/${id}`} />}>
             <Edit color="#666" />
           </IconButton>
-          <IconButton><Delete color="#666" /></IconButton>
+          <DeleteBookmark bookmark={this.props}>
+            <Delete color="#666" />
+          </DeleteBookmark>
         </div>
       </div>
     );
