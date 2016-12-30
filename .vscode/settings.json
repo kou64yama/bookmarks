@@ -1,0 +1,5 @@
+{
+  "eslint.autoFixOnSave": true,
+  "javascript.validate.enable": false,
+  "css.validate": false
+}

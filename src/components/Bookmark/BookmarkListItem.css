@@ -1,8 +1,54 @@
 .root {
-  display: block;
-  padding: 1em;
+  display: flex;
+  justify-content: space-between;
 
   &:hover {
     background: #eee;
   }
+}
+
+.container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.link {
+  display: block;
+  line-height: 48px;
+  text-decoration: inherit;
+  color: #666;
+  box-sizing: border-box;
+  padding-left: 1em;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
+.expanded {
+  padding: 0 1em;
+  color: #999;
+}
+
+.url {
+  margin-left: 1em;
+  font-size: 80%;
+}
+
+.description {
+  font-size: 80%;
+}
+
+.lastAccessAt {
+  margin-bottom: 0.5em;
+  font-size: 80%;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-start;
 }

@@ -85,11 +85,11 @@ app.use('/rest', rest());
 app.get('/redirect/:id', async (req, res, next) => {
   try {
     const bookmark = await Bookmark.findById(req.params.id);
+    bookmark.lastAccessAt = new Date();
+    bookmark.save();
+
     res.status(302);
     res.redirect(bookmark.url);
-
-    bookmark.accessAt = new Date();
-    bookmark.save();
   } catch (err) {
     next(err);
   }

@@ -8,6 +8,11 @@ import history from '../../core/history';
 class BookmarkForm extends Component {
   static propTypes = {
     onRequestSubmit: PropTypes.func,
+    defaultValue: PropTypes.shape({
+      name: PropTypes.string,
+      url: PropTypes.string,
+      description: PropTypes.string,
+    }),
   }
 
   state = {
@@ -50,14 +55,16 @@ class BookmarkForm extends Component {
   }
 
   render() {
-    const errorMap = this.createErrorMap();
+    const { defaultValue = {} } = this.props;
     const { disabled } = this.state;
+    const errorMap = this.createErrorMap();
 
     return (
       <Form onSubmit={event => this.handleSubmit(event)}>
         <FormText>
           <TextField
             floatingLabelText="Name"
+            defaultValue={defaultValue.name}
             errorText={errorMap.name}
             disabled={disabled}
             fullWidth
@@ -65,6 +72,7 @@ class BookmarkForm extends Component {
           />
           <TextField
             floatingLabelText="URL"
+            defaultValue={defaultValue.url}
             errorText={errorMap.url}
             disabled={disabled}
             fullWidth
@@ -72,6 +80,7 @@ class BookmarkForm extends Component {
           />
           <TextField
             floatingLabelText="Description"
+            defaultValue={defaultValue.description}
             errorText={errorMap.description}
             rows={4}
             rowsMax={4}

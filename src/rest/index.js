@@ -23,6 +23,9 @@ function restify(Model) {
   router.post('/', async (req, res, next) => {
     try {
       const body = { ...req.body };
+      delete body.id;
+      delete body.createdAt;
+      delete body.updatedAt;
       const result = await Model.create(body);
       res.status(201);
       res.jsonp(result);
@@ -36,6 +39,32 @@ function restify(Model) {
       const result = await Model.findById(req.params.id);
       res.status(200);
       res.jsonp(result);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  router.put('/:id', async (req, res, next) => {
+    try {
+      const current = await Model.findById(req.params.id);
+      const body = { ...req.body };
+      delete body.id;
+      delete body.createdAt;
+      delete body.updatedAt;
+      Object.assign(current, body);
+      const result = await current.save();
+      res.status(200);
+      res.jsonp(result);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  router.delete('/:id', async (req, res, next) => {
+    try {
+      await Model.destroy({ where: req.params });
+      res.status(200);
+      res.end();
     } catch (err) {
       next(err);
     }
