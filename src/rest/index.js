@@ -1,74 +1,15 @@
 import { Router } from 'express';
 import PrettyError from 'pretty-error';
 import createError from 'http-errors';
-import { Bookmark } from '../data/models';
+import { bookmarkService } from '../services';
 
 const pe = new PrettyError();
 pe.skipNodeFiles();
 pe.skipPackage('express');
 
-function restify(Model) {
+export default function rest() {
   const router = Router();
-
-  router.get('/', async (req, res, next) => {
-    try {
-      const result = await Model.findAll();
-      res.status(200);
-      res.jsonp(result);
-    } catch (err) {
-      next(err);
-    }
-  });
-
-  router.post('/', async (req, res, next) => {
-    try {
-      const body = { ...req.body };
-      delete body.id;
-      delete body.createdAt;
-      delete body.updatedAt;
-      const result = await Model.create(body);
-      res.status(201);
-      res.jsonp(result);
-    } catch (err) {
-      next(err);
-    }
-  });
-
-  router.get('/:id', async (req, res, next) => {
-    try {
-      const result = await Model.findById(req.params.id);
-      res.status(200);
-      res.jsonp(result);
-    } catch (err) {
-      next(err);
-    }
-  });
-
-  router.put('/:id', async (req, res, next) => {
-    try {
-      const current = await Model.findById(req.params.id);
-      const body = { ...req.body };
-      delete body.id;
-      delete body.createdAt;
-      delete body.updatedAt;
-      Object.assign(current, body);
-      const result = await current.save();
-      res.status(200);
-      res.jsonp(result);
-    } catch (err) {
-      next(err);
-    }
-  });
-
-  router.delete('/:id', async (req, res, next) => {
-    try {
-      await Model.destroy({ where: req.params });
-      res.status(200);
-      res.end();
-    } catch (err) {
-      next(err);
-    }
-  });
+  router.use(bookmarkService.router());
 
   // eslint-disable-next-line no-unused-vars
   router.use((err, req, res, next) => {
@@ -78,6 +19,8 @@ function restify(Model) {
     switch (err.name) {
       case 'SequelizeValidationError':
         return next(createError(400, err.message, { ...err }));
+      case 'SequelizeUniqueConstraintError':
+        return next(createError(409, err.message, { ...err }));
       default:
         return next(err);
     }
@@ -94,11 +37,5 @@ function restify(Model) {
     });
   });
 
-  return router;
-}
-
-export default function rest() {
-  const router = Router();
-  router.use('/bookmarks', restify(Bookmark));
   return router;
 }

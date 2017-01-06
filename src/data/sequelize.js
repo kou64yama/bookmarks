@@ -8,7 +8,12 @@
  */
 
 import Sequelize from 'sequelize';
+import cls from 'continuation-local-storage';
 import { databaseUrl } from '../config';
+
+const namespace = cls.createNamespace('sequelize');
+Sequelize.cls = namespace;
+// Sequelize.useCLS(namespace);
 
 const sequelize = new Sequelize(databaseUrl, {
   define: {

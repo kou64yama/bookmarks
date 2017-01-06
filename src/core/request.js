@@ -47,6 +47,7 @@ class RequestBuilder {
 
     const response = await fetch(url, {
       method: this.method,
+      credentials: 'include',
       headers,
       body: body ? JSON.stringify(body) : undefined,
     });
@@ -82,4 +83,5 @@ export default {
   post: (url, params) => new RequestBuilder({ responseHandlers }).init('post', url, params),
   put: (url, params) => new RequestBuilder({ responseHandlers }).init('put', url, params),
   del: (url, params) => new RequestBuilder({ responseHandlers }).init('delete', url, params),
+  delete: (url, params) => new RequestBuilder({ responseHandlers }).init('delete', url, params),
 };
