@@ -8,8 +8,8 @@ export default {
 
   path: '/',
 
-  async action({ store }) {
-    const bookmarks = await bookmarkService.findAll();
+  async action({ store, query, user }) {
+    const bookmarks = await bookmarkService.findAll(query, user);
     store.dispatch(receiveBookmarks(bookmarks));
 
     return {

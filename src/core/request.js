@@ -47,6 +47,7 @@ class RequestBuilder {
 
     const response = await fetch(url, {
       method: this.method,
+      credentials: 'include',
       headers,
       body: body ? JSON.stringify(body) : undefined,
     });

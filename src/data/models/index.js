@@ -12,6 +12,7 @@ import User from './User';
 import UserLogin from './UserLogin';
 import UserClaim from './UserClaim';
 import UserProfile from './UserProfile';
+import Securable from './Securable';
 import Bookmark from './Bookmark';
 
 User.hasMany(UserLogin, {
@@ -35,6 +36,20 @@ User.hasOne(UserProfile, {
   onDelete: 'cascade',
 });
 
+Securable.belongsTo(User, {
+  foreignKey: { name: 'ownerId', allowNull: false },
+  as: 'owner',
+  onUpdate: 'cascade',
+  onDelete: 'cascade',
+});
+
+Bookmark.belongsTo(Securable, {
+  foreignKey: { name: 'sid', allowNull: false },
+  as: 'securable',
+  onUpdate: 'cascade',
+  onDelete: 'cascade',
+});
+
 function sync(...args) {
   return sequelize.sync(...args);
 }
@@ -45,5 +60,6 @@ export {
   UserLogin,
   UserClaim,
   UserProfile,
+  Securable,
   Bookmark,
 };
