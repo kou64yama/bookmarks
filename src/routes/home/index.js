@@ -1,7 +1,7 @@
 import React from 'react';
 import Home from './Home';
 import Layout from '../../components/Layout';
-import request from '../../core/request';
+import { bookmarkService } from '../../services';
 import { receiveBookmarks } from '../../actions/bookmarks';
 
 export default {
@@ -9,7 +9,7 @@ export default {
   path: '/',
 
   async action({ store }) {
-    const bookmarks = await request.get('/rest/bookmarks').send();
+    const bookmarks = await bookmarkService.findAll();
     store.dispatch(receiveBookmarks(bookmarks));
 
     return {
