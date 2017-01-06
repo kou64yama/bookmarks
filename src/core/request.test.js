@@ -34,6 +34,5 @@ test('200 OK', async (t) => {
 
 test('404 Error', async (t) => {
   const error = await t.throws(request.get('http://localhost/404').send());
-  t.is(error.message, 'Not Found');
-  t.deepEqual(error.body, { message: 'Page not found' });
+  t.is(error.message, 'Page not found');
 });
