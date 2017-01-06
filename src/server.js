@@ -53,9 +53,9 @@ app.use(bodyParser.json());
 // -----------------------------------------------------------------------------
 app.use(expressJwt({
   secret: auth.jwt.secret,
-  credentialsRequired: false,
+  credentialsRequired: true,
   getToken: req => req.cookies.id_token,
-}));
+}).unless({ path: [/^\/login(\/.*)?$/] }));
 app.use(passport.initialize());
 
 if (process.env.NODE_ENV !== 'production') {
@@ -166,6 +166,12 @@ pe.skipPackage('express');
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(302);
+    res.redirect('/login');
+    return;
+  }
+
   // eslint-disable-next-line no-console
   console.log(pe.render(err));
   const html = ReactDOM.renderToStaticMarkup(
