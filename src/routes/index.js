@@ -19,7 +19,7 @@ export default {
     require('./home').default,
     require('./new').default,
     require('./edit').default,
-    // require('./login').default,
+    require('./login').default,
     // require('./admin').default,
 
     // Wildcard routes, e.g. { path: '*', ... } (must go last)

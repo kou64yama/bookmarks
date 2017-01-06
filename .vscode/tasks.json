@@ -21,7 +21,9 @@
     },
     {
       "taskName": "start",
-      "args": ["start"]
+      "args": ["start"],
+      "isWatching": true,
+      "isBuildCommand": true
     }
   ]
 }

@@ -39,8 +39,8 @@ export default class ClientService {
     return !!this.Model.attributes.sid;
   }
 
-  findAll(where = {}, user) {
-    return this.Model.findAll({
+  async findAll(where = {}, user) {
+    const results = await this.Model.findAll({
       where: {
         ...where,
         ...this.isSecurable() ? { '$securable.ownerId$': user.id } : {},
@@ -49,6 +49,8 @@ export default class ClientService {
         ...this.isSecurable() ? [{ model: Securable, as: 'securable' }] : {},
       ],
     });
+
+    return results.map(x => x.toJSON());
   }
 
   create(body, user) {
@@ -57,10 +59,13 @@ export default class ClientService {
       if (this.isSecurable()) {
         securable = await Securable.create({ ownerId: user.id }, { transaction });
       }
-      return this.Model.create({
+
+      const result = await this.Model.create({
         ...body,
         sid: securable && securable.id,
       }, { transaction });
+
+      return result.toJSON();
     });
   }
 
@@ -76,7 +81,7 @@ export default class ClientService {
     if (current === null) {
       throw createError(404, `${this.Model.name} not found`);
     }
-    return current;
+    return current.toJSON();
   }
 
   async update(id, body, user) {
@@ -92,8 +97,11 @@ export default class ClientService {
       if (current === null) {
         throw createError(404, `${this.Model.name} not found`);
       }
+
       Object.assign(current, body);
-      return current.save({ transaction });
+      await current.save({ transaction });
+
+      return current.toJSON();
     });
   }
 
