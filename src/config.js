@@ -1,35 +1,25 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
+import { join } from 'path';
+import Config, { Middleware } from 'nobushi-config/lib/Config';
+import ConfigLoader from 'nobushi-config/lib/ConfigLoader';
+import applyFilter from 'nobushi-config/lib/applyFilter';
+import DefaultMiddleware from 'nobushi-config/lib/middleware/DefaultMiddleware';
+import SecureMiddleware from 'nobushi-config/lib/middleware/SecureMiddleware';
+import environment from 'nobushi-config/lib/filter/environment';
 
-/* eslint-disable max-len */
+let middleware: Middleware;
+if (process.env.NODE_CONFIG_PRIVATE_KEY) {
+  const privateKey = new Buffer(process.env.NODE_CONFIG_PRIVATE_KEY, 'base64');
+  middleware = new SecureMiddleware(privateKey.toString('utf8'));
+} else {
+  middleware = new DefaultMiddleware();
+}
 
-export const port = process.env.PORT || 3000;
-export const host = process.env.WEBSITE_HOSTNAME || `localhost:${port}`;
+const configDir = process.env.NODE_CONFIG_DIR || join(__dirname, 'config');
+const files = ['default', process.env.NODE_ENV].filter(x => x);
+const loader = new ConfigLoader(configDir);
+const config = Config.generate(
+  loader.loadSync(files),
+  applyFilter(middleware, [environment(process.env)]),
+);
 
-export const databaseUrl = process.env.DATABASE_URL || 'postgresql://bookmarks:bookmarks@localhost:5432/bookmarks';
-
-export const analytics = {
-
-  // https://analytics.google.com/
-  google: {
-    trackingId: process.env.GOOGLE_TRACKING_ID, // UA-XXXXX-X
-  },
-
-};
-
-export const auth = {
-
-  jwt: { secret: process.env.JWT_SECRET || 'Bookmarks' },
-
-  // https://developers.facebook.com/
-  facebook: {
-    id: process.env.FACEBOOK_APP_ID || '1814434002145069',
-    secret: process.env.FACEBOOK_APP_SECRET || '1355acf956e7a29d189902727b12bd84',
-  },
-};
+module.exports = config;

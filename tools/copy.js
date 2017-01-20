@@ -19,6 +19,7 @@ import { format } from './run';
  */
 async function copy() {
   await makeDir('build');
+  await makeDir('build/config');
   await Promise.all([
     writeFile('build/package.json', JSON.stringify({
       private: true,
@@ -31,6 +32,8 @@ async function copy() {
     copyFile('LICENSE.md', 'build/LICENSE.md'),
     copyFile('.env', 'build/.env'),
     copyFile('Procfile', 'build/Procfile'),
+    copyFile('config/default.yml', 'build/config/default.yml'),
+    copyFile('config/production.deploy.yml', 'build/config/production.yml'),
     copyDir('src/content', 'build/content'),
     copyDir('public', 'build/public'),
   ]);

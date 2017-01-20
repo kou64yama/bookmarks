@@ -1,0 +1,13 @@
+port: ${PORT}
+
+databaseUrl: ${HEROKU_POSTGRESQL_CRIMSON_URL}
+
+analytics.google:
+  trackingId: ${GOOGLE_TRACKING_ID}
+
+auth.jwt:
+  secret: ${JWT_SECRET}
+
+auth.facebook:
+  id: ${FACEBOOK_APP_ID}
+  secret: ${FACEBOOK_APP_SECRET}
