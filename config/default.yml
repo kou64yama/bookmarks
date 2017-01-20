@@ -1,0 +1,14 @@
+port: 3000
+host: localhost
+
+databaseUrl: 'sqlite::memory:'
+
+analytics.google:
+  trackingId: ${GOOGLE_TRACKING_ID}
+
+auth.jwt:
+  secret: One Bookmark
+
+auth.facebook:
+  id: '1814434002145069'
+  secret: 1355acf956e7a29d189902727b12bd84
