@@ -6,9 +6,9 @@ import Alert from '../../containers/Alert';
 import Confirm from '../../containers/Confirm';
 import Prompt from '../../containers/Prompt';
 
-const Layout = ({ children }) => (
+const Layout = ({ children, noHeader = false }) => (
   <div>
-    <Header />
+    {!noHeader && <Header />}
     {children}
     <Alert />
     <Confirm />
@@ -18,6 +18,7 @@ const Layout = ({ children }) => (
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  noHeader: PropTypes.bool,
 };
 
 export default withStyles(s)(Layout);
